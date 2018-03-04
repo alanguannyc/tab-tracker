@@ -1,11 +1,32 @@
-// eslint-disable-next-line 
 <template>
-  <div>
-    <h1>Register</h1>   
-    <input type="email" name="email" v-model="email" placeholder="email"/>
-    <input type="password" name="password" v-model="password" placeholder="password"/>
-    <button @click="register()" type="submit">Register</button>
-    </div>
+  <v-app id="inspire">
+    <v-content>
+      <v-container fluid fill-height>
+        <v-layout align-center justify-center>
+          <v-flex xs12 sm8 md4>
+            <v-card class="elevation-12">
+              <v-toolbar dark color="primary">
+                <v-toolbar-title>Login form</v-toolbar-title>
+                <v-spacer></v-spacer>
+              </v-toolbar>
+              <v-card-text>
+                <v-form>
+                  <v-text-field prepend-icon="person" v-model="email" name="email" label="email" type="email"></v-text-field>
+                  <v-text-field prepend-icon="lock" v-model="password" name="password" label="Password" id="password" type="password"></v-text-field>
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" @click="register()" type="submit">Register</v-btn>
+              </v-card-actions>
+              <v-alert type="error" :value="true" v-html="error">
+              </v-alert>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
@@ -14,22 +35,22 @@ export default {
   data () {
     return {
       email: '',
-      password: ''
+      password: '',
+      error: null
     }
   },
-  methods:{
-      async register(){
-          const response = await AuthenticationService.register({
-              email: this.email,
-              password: this.password
-          })
-          console.log(response.data);
+  methods: {
+    async register () {
+      try {
+        await AuthenticationService.register({
+          email: this.email,
+          password: this.password
+        })
+      } catch (err) {
+        console.error(err.response.data)
+        this.error = err.response.data.error
       }
+    }
   }
-//   mounted(){
-//       setTimeout(()=>{
-//           this.email = 'dummy'
-//       }, 2000)
-//   }
 }
 </script>
