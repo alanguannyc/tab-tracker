@@ -17,7 +17,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click="register()" type="submit">Register</v-btn>
+                <v-btn color="primary" @click="login()" type="submit">Login</v-btn>
               </v-card-actions>
               <v-alert type="error" :value="true" v-if="error" v-html="error">
               </v-alert>
@@ -40,9 +40,9 @@ export default {
     }
   },
   methods: {
-    async register () {
+    async login () {
       try {
-        await AuthenticationService.register({
+        await AuthenticationService.login({
           email: this.email,
           password: this.password
         })
