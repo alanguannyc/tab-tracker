@@ -6,13 +6,13 @@
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
-                <v-toolbar-title>Login form</v-toolbar-title>
+                <v-toolbar-title>Register</v-toolbar-title>
                 <v-spacer></v-spacer>
               </v-toolbar>
               <v-card-text>
                 <v-form>
                   <v-text-field prepend-icon="person" v-model="email" name="email" label="email" type="email"></v-text-field>
-                  <v-text-field prepend-icon="lock" v-model="password" name="password" label="Password" id="password" type="password"></v-text-field>
+                  <v-text-field prepend-icon="lock" v-model="password" name="password" label="Password" id="password" type="password" autocomplete="new-password"></v-text-field>
                 </v-form>
               </v-card-text>
               <v-card-actions>
