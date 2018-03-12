@@ -5,7 +5,7 @@
         <router-link to="/" tag="span" style="cursor: pointer">Tab Tracker</router-link>
     </v-toolbar-title>
     <v-toolbar-items>
-        <v-btn flat :to="'songs'">Browse</v-btn>
+        <v-btn flat :to="'/songs'">Browse</v-btn>
     </v-toolbar-items>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">

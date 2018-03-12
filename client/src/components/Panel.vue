@@ -9,10 +9,7 @@
                 <v-spacer></v-spacer>
               </v-toolbar>
               <v-card-text>
-                  <slot>
-                      No Content Found.
-                  </slot>
-                  <div slot="video">No video</div>
+                  <slot>No Content</slot>
                 <v-form>
                 </v-form>
               </v-card-text>
