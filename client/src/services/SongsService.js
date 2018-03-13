@@ -9,5 +9,11 @@ export default {
   },
   show (id) {
     return Api().get(`songs/${id}`)
+  },
+  edit (song) {
+    return Api().put(`songs/${song.id}`, song)
+  },
+  delete (id) {
+    return Api().delete(`songs/${id}`)
   }
 }

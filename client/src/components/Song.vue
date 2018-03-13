@@ -1,34 +1,59 @@
 <template>
-<v-container fluid grid-list-xs>
-    <v-layout row wrap>
+<v-container fluid grid-list-xs class="container">
+    <v-layout row wrap >
         <v-flex d-flex xs12 sm6>
         <v-layout row wrap>
           <v-flex d-flex xs12 sm12>
               <v-card color="indigo" dark>
                 <v-card-text>
-                    {{song.title}}
+                  <img :src="song.albumImageUrl" class="albumImage">
+                   <div>{{song.title}}</div>
                 </v-card-text>
               </v-card>
             </v-flex>
-            <v-flex d-flex xs12 >
+            <v-flex d-flex xs6 >
               <v-card color="indigo" dark>
                 <v-card-text>
-                    {{song.title}}
+                    {{song.artist}}
+                </v-card-text>
+              </v-card>
+            </v-flex>
+            <v-flex d-flex xs6 >
+              <v-card color="indigo" dark>
+                <v-card-text>
+                    {{song.genre}}
                 </v-card-text>
               </v-card>
             </v-flex>
         </v-layout>
       </v-flex>
       <v-flex d-flex xs12 sm6>
-        <v-flex d-flex>
-              <v-card color="indigo" dark>
+          <v-card color="indigo" dark>
                 <v-card-text>
-                    {{data}}
+                  <textarea readonly v-model="song.tab">
+                    </textarea>
                 </v-card-text>
               </v-card>
-            </v-flex>
       </v-flex>
+      <v-flex d-flex xs12 md6>
+              <v-card color="indigo" dark>
+                <v-card-text>
+                    <youtube :video-id="song.youtubeId" :player-height="200"></youtube>
+                </v-card-text>
+              </v-card>
+      </v-flex>
+      <v-flex d-flex xs12 md6>
+              <v-card color="indigo" dark>
+                <v-card-text>
+                    {{song.lyrics}}
+                </v-card-text>
+              </v-card>
+      </v-flex>
+      <v-btn left small color="error" @click="remove">delete</v-btn>
     </v-layout>
+    <v-btn fab dark large color="cyan" right bottom fixed :to="{name: 'edit-song', params: { SongId: song.id }}">
+      <v-icon dark>edit</v-icon>
+    </v-btn>
 </v-container>
 </template>
 <script>
@@ -42,13 +67,34 @@ export default {
     }
   },
   async mounted () {
-    const songId = this.$store.state.route.params.SongId
+    const songId = this.$store.state.route.params.songId
     this.song = (await SongsSerive.show(songId)).data
   },
   components: {
     Panel
+  },
+  methods: {
+    async remove () {
+      if (alert('Are you sure?')) {
+        try {
+          await SongsSerive.delete(this.song.id)
+          this.$router.push({name: 'Songs'})
+        } catch (err) {
+          console.log(err)
+        }
+      }
+    }
   }
 }
 </script>
 <style>
+.container {
+  margin: 20px 0px;
+}
+textarea {
+  width: 100%;
+}
+.albumImage {
+  height: 200px;
+}
 </style>

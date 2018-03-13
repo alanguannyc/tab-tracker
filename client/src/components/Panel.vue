@@ -1,5 +1,5 @@
 <template>
-  <v-content>
+  <!-- <v-content>
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
@@ -17,7 +17,15 @@
           </v-flex>
         </v-layout>
       </v-container>
-    </v-content>
+    </v-content> -->
+    <v-flex>
+          <v-card >
+            <v-card-title primary class="title">{{title}}</v-card-title>
+            <v-card-text>
+              <slot>No Content</slot>
+            </v-card-text>
+          </v-card>
+        </v-flex>
 </template>
 <script>
 export default{

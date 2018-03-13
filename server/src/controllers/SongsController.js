@@ -37,6 +37,34 @@ module.exports = {
                 error: 'An error has occured.'
             })
         }
+    },
+    async put (req, res) {
+        try {
+            const song = await Song.update(req.body, {
+                where: {
+                    id: req.params.id
+                }
+            })
+            res.send(req.body)
+        } catch (err) {
+            res.status(500).send({
+                error: 'An error has occured.'
+            })
+        }
+    },
+    async delete (req, res) {
+        try {
+            await Song.destroy({
+                where: {
+                    id: req.params.id
+                }
+            })
+            res.send('it has been deleted')
+        } catch (err) {
+            res.status(500).send({
+                error: 'An error has occured.'
+            })
+        }
     }
    
     

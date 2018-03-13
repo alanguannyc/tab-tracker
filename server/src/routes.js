@@ -9,4 +9,6 @@ module.exports = (app) => {
     app.get('/songs', SongsController.index)
     app.post('/songs', SongsController.post)
     app.get('/songs/:id', SongsController.show)
+    app.put('/songs/:id', SongsController.put)
+    app.delete('/songs/:id', SongsController.delete)
 }

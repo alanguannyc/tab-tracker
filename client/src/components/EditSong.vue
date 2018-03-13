@@ -4,37 +4,37 @@
               <v-form class="px-0" ref="form1">
                 <v-text-field
                 label="title"
-                v-model="songs.title"
+                v-model="song.title"
                 :rules="nameRules"
                 required
                 ></v-text-field>
                 <v-text-field
                 label="artist"
-                v-model="songs.artist"
+                v-model="song.artist"
                 :rules="nameRules"
                 required
                 ></v-text-field>
                 <v-text-field
                 label="genre"
-                v-model="songs.genre"
+                v-model="song.genre"
                 :rules="nameRules"
                 required
                 ></v-text-field>
                 <v-text-field
                 label="album"
-                v-model="songs.album"
+                v-model="song.album"
                 :rules="nameRules"
                 required
                 ></v-text-field>
                 <v-text-field
                 label="albumImageUrl"
-                v-model="songs.albumImageUrl"
+                v-model="song.albumImageUrl"
                 :rules="nameRules"
                 required
                 ></v-text-field>
                 <v-text-field
                 label="youtubeId"
-                v-model="songs.youtubeId"
+                v-model="song.youtubeId"
                 :rules="nameRules"
                 required
                 ></v-text-field>
@@ -51,23 +51,22 @@
           <v-text-field
                 label="tab"
                 multi-line
-                v-model="songs.tab"
+                v-model="song.tab"
                 :rules="nameRules"
                 required
                 ></v-text-field>
                 <v-text-field
                 label="lyrics"
                 multi-line
-                v-model="songs.lyrics"
+                v-model="song.lyrics"
                 :rules="nameRules"
                 required
                 ></v-text-field>
                 <v-btn
-                @click="create()"
-                >Create</v-btn>
+                @click="save()"
+                >save</v-btn>
                 <v-btn
-                v-if="!empty"
-                @click="clear()"
+                :to="{name: 'song', params: {SongId: song.id }}"
                 >Cancle</v-btn>
                 </v-form>
       </v-flex>
@@ -78,26 +77,17 @@ import SongsSerive from '@/services/SongsService'
 export default {
   data () {
     return {
-      songs: {
-        title: null,
-        artist: null,
-        genre: null,
-        album: null,
-        albumImageUrl: null,
-        youtubeId: null,
-        lyrics: null,
-        tab: null
-      },
+      song: {},
       nameRules: [
         v => !!v || 'This field is required'
       ]
     }
   },
   methods: {
-    async create () {
+    async save () {
       try {
-        await SongsSerive.create(this.songs)
-        this.$router.push({name: 'Songs'})
+        await SongsSerive.edit(this.song)
+        this.$router.push({name: 'song', params: { SongId: this.song.id }})
       } catch (err) {
         console.log(err)
       }
@@ -107,16 +97,9 @@ export default {
       this.$refs.form2.reset()
     }
   },
-  computed: {
-    empty: function () {
-      for (var key in this.songs) {
-        // console.log(this.songs[key])
-        if (this.songs[key] === null) {
-          return false
-        }
-        return true
-      }
-    }
+  async mounted () {
+    const songId = this.$store.state.route.params.SongId
+    this.song = (await SongsSerive.show(songId)).data
   }
 }
 </script>

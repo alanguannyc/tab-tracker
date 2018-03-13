@@ -4,7 +4,7 @@
    <panel :title =" title " >
        <slot>
          <div v-for="song in songs" :key="song.id">
-          <v-btn small :to="{name: 'song', params: {SongId: song.id }}">View Song</v-btn>
+          <v-btn small :to="{name: 'song', params: {songId: song.id }}">View Song</v-btn>
            {{song.title}} -
            {{song.artist}} -
            {{song.genre}}
