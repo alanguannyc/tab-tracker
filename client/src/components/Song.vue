@@ -38,14 +38,15 @@
       <v-flex d-flex xs12 md6>
               <v-card color="indigo" dark>
                 <v-card-text>
-                    <youtube :video-id="song.youtubeId" :player-height="200"></youtube>
+                    <youtube :video-id="song.youtubeId" :player-height="300"></youtube>
                 </v-card-text>
               </v-card>
       </v-flex>
       <v-flex d-flex xs12 md6>
               <v-card color="indigo" dark>
                 <v-card-text>
-                    {{song.lyrics}}
+                    <textarea readonly v-model="song.lyrics">
+                    </textarea>
                 </v-card-text>
               </v-card>
       </v-flex>
@@ -75,7 +76,7 @@ export default {
   },
   methods: {
     async remove () {
-      if (alert('Are you sure?')) {
+      if (confirm('Are you sure?')) {
         try {
           await SongsSerive.delete(this.song.id)
           this.$router.push({name: 'Songs'})
@@ -93,6 +94,7 @@ export default {
 }
 textarea {
   width: 100%;
+  height: 300px;
 }
 .albumImage {
   height: 200px;
