@@ -2,12 +2,12 @@ import Api from '@/services/Api'
 
 export default {
   index (search) {
-    return Api().get('songs', 
-    {
-      params: {
-        search: search
-      }
-    })
+    return Api().get('songs',
+      {
+        params: {
+          search: search
+        }
+      })
   },
   create (song) {
     return Api().post('songs', song)

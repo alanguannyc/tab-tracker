@@ -10,6 +10,7 @@
         </v-flex>
 </template>
 <script>
+import _ from 'lodash'
 export default{
   data () {
     return {
@@ -18,7 +19,7 @@ export default{
     }
   },
   watch: {
-    search () {
+    search: _.debounce(async function () {
       const route = {
         name: 'Songs'
       }
@@ -26,7 +27,7 @@ export default{
         route.query = { search: this.search }
       }
       this.$router.push(route)
-    },
+    }, 700),
     '$route.query.search': {
       immediate: true,
       handler (value) {

@@ -49,10 +49,6 @@ export default {
         this.songs = (await SongsService.index(value)).data
       }
     }
-  },
-  async mounted () {
-    // await console.log(SongsService.index())
-    this.songs = (await SongsService.index()).data
   }
 }
 </script>
