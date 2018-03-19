@@ -48,6 +48,7 @@ export default {
         })
         this.$store.dispatch('setToken', response.data.token)
         this.$store.dispatch('setUser', response.data.user)
+        this.$router.push('/Songs')
       } catch (err) {
         console.error(err.response.data)
         this.error = err.response.data.error

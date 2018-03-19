@@ -10,8 +10,8 @@
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
         <!-- <v-btn flat><router-link :to="'register'">Sign Up</router-link></v-btn> -->
-        <v-btn v-if="!$store.state.isUserLoggedIn" flat :to="'register'">Sign Up</v-btn>
-      <v-btn v-if="!$store.state.isUserLoggedIn" flat :to="'login'">Login</v-btn>
+        <v-btn v-if="!$store.state.isUserLoggedIn" flat :to="'/register'">Sign Up</v-btn>
+      <v-btn v-if="!$store.state.isUserLoggedIn" flat :to="'/login'">Login</v-btn>
       <v-btn flat dark v-if="$store.state.isUserLoggedIn" @click="logout()">Log Out</v-btn>
     </v-toolbar-items>
   </v-toolbar>
