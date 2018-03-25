@@ -1,9 +1,13 @@
 <template>
   <v-app id="inspire">
     <!-- <slot name="video"></slot> -->
-    <v-layout mt-10>
-      <v-flex class="search-box" >
-    <songs-search />
+    <v-layout>
+    <v-flex xs-6 >
+      <songs-bookmarks class="bookmarks" />
+      <songs-history class="history" />
+    </v-flex>
+      <v-flex xs-6>
+    <songs-search class="search-box" />
    <panel :title =" title " mt-10>
        <slot>
          <div v-for="song in songs" :key="song.id">
@@ -31,6 +35,8 @@
 import Panel from '@/components/Panel'
 import SongsSearch from '@/components/SongsSearch'
 import SongsService from '@/services/SongsService'
+import SongsBookmarks from '@/components/SongsBookmarks'
+import SongsHistory from '@/components/SongsHistory'
 export default {
   data () {
     return {
@@ -40,7 +46,9 @@ export default {
   },
   components: {
     Panel,
-    SongsSearch
+    SongsSearch,
+    SongsBookmarks,
+    SongsHistory
   },
   watch: {
     '$route.query.search': {
@@ -52,8 +60,16 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .search-box {
-  margin-top: 12px;
+  margin: 10px 0px 10px 0px;
+}
+
+.bookmarks {
+  margin: 10px 5px 10px 0px;
+}
+
+.history {
+  margin: 10px 5px 10px 0px;
 }
 </style>

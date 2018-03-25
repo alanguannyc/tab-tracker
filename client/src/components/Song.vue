@@ -56,7 +56,7 @@
     <v-btn fab dark large color="cyan" right :to="{name: 'edit-song', params: { SongId: song.id }}">
       <v-icon dark>edit</v-icon>
     </v-btn>
-    <v-btn v-if="isUserLoggedIn && !bookmark" fab dark large color="cyan" right @click="setAsBookmark">
+    <v-btn v-if="isUserLoggedIn" fab dark large color="cyan" right @click="setAsBookmark">
       <v-icon dark>bookmark</v-icon>
     </v-btn>
     <v-btn v-if="isUserLoggedIn" fab dark large color="cyan" right @click="unBookmark">
@@ -68,6 +68,7 @@
 <script>
 import SongsSerive from '@/services/SongsService'
 import BookmarksService from '@/services/BookmarksService'
+import SongsHistoryService from '@/services/SongsHistoryService'
 import Panel from '@/components/Panel'
 import {mapState} from 'vuex'
 export default {
@@ -79,7 +80,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['isUserLoggedIn'])
+    ...mapState(['isUserLoggedIn', 'user'])
   },
   async mounted () {
     const songId = this.$store.state.route.params.songId
@@ -88,15 +89,19 @@ export default {
     if (!this.isUserLoggedIn) {
       return
     }
-    this.bookmark = (await BookmarksService.index({
+    const bookmarks = (await BookmarksService.index({
       songId: this.song.id,
-      userId: this.$store.state.user.id
+      userId: this.user.id
     })).data
+    if (bookmarks.length) {
+      this.bookmark = bookmarks[0]
+    }
 
-    this.bookmark = !!this.bookmark
-
-    if (this.bookmark) {
-      this.bookmark = true
+    if (this.isUserLoggedIn) {
+      await SongsHistoryService.post({
+        SongId: songId,
+        UserId: this.user.id
+      })
     }
   },
   components: {
@@ -115,10 +120,11 @@ export default {
     },
     async setAsBookmark () {
       try {
-        await BookmarksService.post({
-          songId: this.song.id,
-          userId: this.$store.state.user.id
-        })
+        this.bookmark = (await BookmarksService.post({
+          SongId: this.song.id,
+          UserId: this.user.id
+        })).data
+        console.log(this.bookmark)
         this.isBookmarked = true
       } catch (err) {
         console.log(err)
@@ -126,9 +132,9 @@ export default {
     },
     async unBookmark () {
       try {
-        const bookmarkId = this.bookmark
-        console.log(bookmarkId)
-        await BookmarksService.delete({bookmarkId})
+        const bookmarkId = this.bookmark.id
+        console.log(this.bookmark.id)
+        await BookmarksService.delete(bookmarkId)
         this.isBookmarked = false
       } catch (err) {
         console.log(err)

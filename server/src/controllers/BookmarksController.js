@@ -1,17 +1,29 @@
-const {Bookmark} = require ('../models')
-
+const {Bookmark, Song, User} = require ('../models')
+const _ = require('lodash')
 module.exports = {
     
     async index (req, res) {
             try {
                 const {songId, userId} = req.query
-                const bookmark = await Bookmark.findAll({
-                    where: {
-                        UserId: userId,
-                        SongId: songId
-                    }
+                const where = {
+                    UserId: userId
+                }
+                if (songId) {
+                    where.SongId = songId
+                }
+                const bookmarks = await Bookmark.findAll({
+                    where: where,
+                    include: [
+                        {
+                            model: Song
+                        }
+                    ]
                 })
-                res.send(bookmark)
+                .map(bookmark => bookmark.toJSON())
+                .map(bookmark => _.extend({}, 
+                    bookmark.Song,
+                    bookmark))
+                res.send(bookmarks)
             } catch (err) {
                 res.status(500).send({
                     error: 'An error has occured.'
@@ -20,11 +32,11 @@ module.exports = {
     },
     async post (req, res) {
         try {
-            const {songId, userId} = req.body
+            const {SongId, UserId} = req.body
             const bookmark = await Bookmark.findOne({
               where: {
-                SongId: songId,
-                UserId: userId
+                SongId: SongId,
+                UserId: UserId
             }})
             if (bookmark) {
                 return res.status(400).send({
@@ -41,11 +53,9 @@ module.exports = {
     },
     async delete (req, res) {
         try {
-            const {bookmarkId} = req.body
-            console.log(bookmarkId)
             await Bookmark.destroy({
                 where: {
-                    id: bookmarkId
+                    id: req.params.bookmarkId,
                 }
             })
             res.send('it has been deleted')
